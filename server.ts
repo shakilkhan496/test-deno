@@ -162,7 +162,7 @@ router.post('/webhookMain', async (context) => {
         let event;
         try {
             event = await stripe.webhooks.constructEventAsync(
-                rawBody,
+                rawBody.text(),
                 signature,
                 signInSecret,
                 undefined
