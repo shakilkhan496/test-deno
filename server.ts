@@ -161,9 +161,8 @@ const signInSecret = 'whsec_mNEmSD5aLWwqB3GsYjwj2lWtZG1eCvlj';
 async function handler(request) {
     const signature = request.headers.get('Stripe-Signature');
 
-    // First step is to verify the event. The .text() method must be used as the
-    // verification relies on the raw request body rather than the parsed JSON.
-    const body = await request.text();
+    // First step is to verify the event. Use body().value to get the raw body.
+    const body = await request.body().value;
     let event;
     try {
         event = await stripe.webhooks.constructEventAsync(
