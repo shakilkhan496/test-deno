@@ -157,12 +157,15 @@ router.post('/webhookMain', async (context) => {
         // Use context.request.body().value to get the raw body
         const rawBody = await context.request.body().value;
 
-        console.log('Request body: ', rawBody)
+        console.log('Request body: ', rawBody);
 
         let event;
         try {
+            // Parse the rawBody as JSON
+            const parsedBody = JSON.parse(rawBody);
+
             event = await stripe.webhooks.constructEventAsync(
-                rawBody,
+                parsedBody,
                 signature,
                 signInSecret,
                 undefined
@@ -192,6 +195,7 @@ router.post('/webhookMain', async (context) => {
         return new Response('Internal Server Error', { status: 500 });
     }
 });
+
 
 
 app.use(router.routes());
