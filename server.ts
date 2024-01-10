@@ -155,44 +155,44 @@ const signInSecret = 'whsec_mNEmSD5aLWwqB3GsYjwj2lWtZG1eCvlj';
 
 async function handler(context) {
     console.log('this is context',context);
-    const signature = context.request.headers.get('Stripe-Signature');
-    const newBody = await context.text();
-    console.log('this is new body', newBody);
-    // Use context.request.body().value to get the raw body as Uint8Array.
-    // const rawBody = await context.request.body().value;
-    const body = await context.request.text();
-    // console.log('this is rawBody',rawBody);
-    // const body = JSON.stringify(rawBody);
-    console.log('this is body',body);
-    console.log('this is type of body',typeof(body));
-    let event;
-    try {
-        event = await stripe.webhooks.constructEventAsync(
-            newBody,
-            signature,
-            signInSecret,
-            undefined
-        );
-    } catch (err) {
-        console.log(`❌ Error message: ${err.message}`);
-        return new Response(err.message, { status: 400 });
-    }
+    // const signature = context.request.headers.get('Stripe-Signature');
+    // const newBody = await context.text();
+    // console.log('this is new body', newBody);
+    // // Use context.request.body().value to get the raw body as Uint8Array.
+    // // const rawBody = await context.request.body().value;
+    // const body = await context.request.text();
+    // // console.log('this is rawBody',rawBody);
+    // // const body = JSON.stringify(rawBody);
+    // console.log('this is body',body);
+    // console.log('this is type of body',typeof(body));
+    // let event;
+    // try {
+    //     event = await stripe.webhooks.constructEventAsync(
+    //         newBody,
+    //         signature,
+    //         signInSecret,
+    //         undefined
+    //     );
+    // } catch (err) {
+    //     console.log(`❌ Error message: ${err.message}`);
+    //     return new Response(err.message, { status: 400 });
+    // }
 
-    // Successfully constructed event
-    console.log('✅ Success:', event.id);
+    // // Successfully constructed event
+    // console.log('✅ Success:', event.id);
 
-    // Cast event data to Stripe object
-    if (event.type === 'payment_intent.succeeded') {
-        const stripeObject = event.data.object;
-        console.log(`💰 PaymentIntent status: ${stripeObject.status}`);
-    } else if (event.type === 'charge.succeeded') {
-        const charge = event.data.object;
-        console.log(`💵 Charge id: ${charge.id}`);
-    } else {
-        console.warn(`🤷‍♀️ Unhandled event type: ${event.type}`);
-    }
+    // // Cast event data to Stripe object
+    // if (event.type === 'payment_intent.succeeded') {
+    //     const stripeObject = event.data.object;
+    //     console.log(`💰 PaymentIntent status: ${stripeObject.status}`);
+    // } else if (event.type === 'charge.succeeded') {
+    //     const charge = event.data.object;
+    //     console.log(`💵 Charge id: ${charge.id}`);
+    // } else {
+    //     console.warn(`🤷‍♀️ Unhandled event type: ${event.type}`);
+    // }
 
-    return new Response(JSON.stringify({ received: true }), { status: 200 });
+    // return new Response(JSON.stringify({ received: true }), { status: 200 });
 }
 
 router.post('/webhookMain', async (context) => {
