@@ -155,6 +155,10 @@ const signInSecret = 'whsec_mNEmSD5aLWwqB3GsYjwj2lWtZG1eCvlj';
 
 async function handler(context) {
     console.log('this is context',context);
+
+    console.log("Current Deno version", Deno.version.deno);
+    console.log("Current TypeScript version", Deno.version.typescript);
+    console.log("Current V8 version", Deno.version.v8);
     // const signature = context.request.headers.get('Stripe-Signature');
     // const newBody = await context.text();
     // console.log('this is new body', newBody);
