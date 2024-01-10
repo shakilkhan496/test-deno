@@ -153,20 +153,20 @@ const signInSecret = 'whsec_1l6mRfBEEelYMwYB9UFq8mhehPqR1n1c';
 async function handler(context) {
     const signature = context.request.headers.get('Stripe-Signature');
 
-    const body = await context.request.body().value;
-    console.log(typeof(body));
+    const body = await context.request.body({ type:'text'}).value;
+    
     let event;
-    // try {
-    //     event = await stripe.webhooks.constructEventAsync(
-    //         body,
-    //         signature,
-    //         signInSecret,
-    //         undefined
-    //     );
-    // } catch (err) {
-    //     console.log(`❌ Error message: ${err.message}`);
-    //     return new Response(err.message, { status: 400 });
-    // }
+    try {
+        event = await stripe.webhooks.constructEventAsync(
+            body,
+            signature,
+            signInSecret,
+            undefined
+        );
+    } catch (err) {
+        console.log(`❌ Error message: ${err.message}`);
+        return new Response(err.message, { status: 400 });
+    }
 
     
 
