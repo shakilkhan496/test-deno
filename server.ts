@@ -153,12 +153,11 @@ router.get('/', async (req, res) => {
 // This handler will be called for every incoming request.
 const signInSecret = 'whsec_mNEmSD5aLWwqB3GsYjwj2lWtZG1eCvlj';
 
-async function handler(request) {
-    const signature = request.headers.get('Stripe-Signature');
+async function handler(context) {
+    const signature = context.request.headers.get('Stripe-Signature');
 
-    // Read the raw body directly from the request body using a buffer.
-    const buffer = new Uint8Array(1024);  // Adjust the buffer size as needed.
-    const rawBody = await request.body.read(buffer);
+    // Use context.request.body().value to get the raw body as Uint8Array.
+    const rawBody = await context.request.body().value;
 
     let event;
     try {
@@ -191,7 +190,7 @@ async function handler(request) {
 }
 
 router.post('/webhookMain', async (context) => {
-    await handler(context.request);
+    await handler(context);
 });
 
 
