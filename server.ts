@@ -152,7 +152,7 @@ router.get('/', async (req, res) => {
 // ***************************************************************
 // This handler will be called for every incoming request.
 // This handler will be called for every incoming request.
-const signInSecret = 'whsec_mNEmSD5aLWwqB3GsYjwj2lWtZG1eCvlj';
+const signInSecret = 'whsec_O6m22fG6JQO5fC6ABMfsfEnHaN4csDhr';
 
 async function handler(request: Request) {
     const signature = request.headers.get('Stripe-Signature');
