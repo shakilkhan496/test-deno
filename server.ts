@@ -149,58 +149,35 @@ router.get('/', async (req, res) => {
 
 //Main account status
 // ***************************************************************
-
-
-
-
-
-// This handler will be called for every incoming request.
-// This handler will be called for every incoming request.
-const signInSecret = 'whsec_mNEmSD5aLWwqB3GsYjwj2lWtZG1eCvlj';
-
-async function handler(request) {
-    const signature = request.headers.get('Stripe-Signature');
-
-    // First step is to verify the event. Use body().value to get the raw body.
-    const body = await request.body().value;
-    let event;
-    try {
-        event = await stripe.webhooks.constructEventAsync(
-            body,
-            signature,
-            signInSecret,
-            undefined
-        );
-    } catch (err) {
-        console.log(`❌ Error message: ${err.message}`);
-        return new Response(err.message, { status: 400 });
-    }
-
-    // Successfully constructed event
-    console.log('✅ Success:', event.id);
-
-    // Cast event data to Stripe object
-    if (event.type === 'payment_intent.succeeded') {
-        const stripeObject = event.data.object;
-        console.log(`💰 PaymentIntent status: ${stripeObject.status}`);
-    } else if (event.type === 'charge.succeeded') {
-        const charge = event.data.object;
-        console.log(`💵 Charge id: ${charge.id}`);
-    } else {
-        console.warn(`🤷‍♀️ Unhandled event type: ${event.type}`);
-    }
-
-    return new Response(JSON.stringify({ received: true }), { status: 200 });
-}
-
 router.post('/webhookMain', async (context) => {
-    await handler(context.request);
+    try {
+        const rawBody = await context.request.body().value;
+
+        console.log('Request body: ', rawBody);
+
+        let event=rawBody;
+       
+
+        // Successfully constructed event
+        console.log('✅ Success:', event.id);
+
+        // Process the event based on its type
+        if (event.type === 'payment_intent.succeeded') {
+            const stripeObject = event.data.object;
+            console.log(`💰 PaymentIntent status: ${stripeObject.status}`);
+        } else if (event.type === 'charge.succeeded') {
+            const charge = event.data.object;
+            console.log(`💵 Charge id: ${charge.id}`);
+        } else {
+            console.warn(`🤷‍♀️ Unhandled event type: ${event.type}`);
+        }
+
+        return new Response(JSON.stringify({ received: true }), { status: 200 });
+    } catch (error) {
+        console.error('Error:', error);
+        return new Response('Internal Server Error', { status: 500 });
+    }
 });
-
-
-
-
-
 
 
 
