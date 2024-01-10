@@ -151,13 +151,14 @@ async function createAccountLink(accountId) {
 const signInSecret = 'whsec_6jeso8V1B5Sl7TK5UX89bdmMDHwQf6b4';
 
 //supabase master function
-async function supaUpdate(tableName:string,primaryFieldName:string, primaryFieldValue:string, updateFields:{}) {
+async function supaUpdate(tableName, primaryFieldName, primaryFieldValue, updateFields) {
     try {
-        console.log('updating supabase called')
+        console.log('Updating Supabase:', updateFields);
+
         const { error } = await supabase
-            .from(`${tableName}`)
+            .from(tableName)
             .update(updateFields)
-            .eq(`${primaryFieldName}`, primaryFieldValue)
+            .eq(primaryFieldName, primaryFieldValue)
             .select();
 
         if (error) {
@@ -168,10 +169,10 @@ async function supaUpdate(tableName:string,primaryFieldName:string, primaryField
         return true;
     } catch (error) {
         console.error('Unexpected error during Supabase update:', error);
-        console.log(error);
         return false;
     }
 }
+
 
 async function handler(context) {
     console.log('Trigger server')
