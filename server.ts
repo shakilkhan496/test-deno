@@ -153,7 +153,8 @@ const signInSecret = 'whsec_1l6mRfBEEelYMwYB9UFq8mhehPqR1n1c';
 async function handler(context) {
     const signature = context.request.headers.get('Stripe-Signature');
 
-    const body = await context.text();
+    const body = await context.request.body({ type: "raw" }).value;
+    console.log(body);
     let event;
     try {
         event = await stripe.webhooks.constructEventAsync(
