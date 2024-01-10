@@ -154,15 +154,15 @@ router.post('/webhookMain', async (context) => {
         const signature = context.request.headers?.get('Stripe-Signature') || '';
         const signInSecret = 'whsec_mNEmSD5aLWwqB3GsYjwj2lWtZG1eCvlj';
 
-        // Use context.request.body().value to get the raw body
-        const rawBody = await context.request.body().value;
+        // Use context.request.bodyRaw to get the raw body as Buffer
+        const rawBody = await context.request.bodyRaw();
 
-        console.log('Request body: ', rawBody);
+        console.log('Request body: ', rawBody.toString('utf-8'));
 
         let event;
         try {
             event = await stripe.webhooks.constructEventAsync(
-                rawBody,
+                rawBody.toString('utf-8'),
                 signature,
                 signInSecret,
                 undefined
@@ -192,6 +192,7 @@ router.post('/webhookMain', async (context) => {
         return new Response('Internal Server Error', { status: 500 });
     }
 });
+
 
 
 
