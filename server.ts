@@ -167,6 +167,7 @@ async function supaUpdate(tableName:string,primaryFieldName:string, primaryField
         return true;
     } catch (error) {
         console.error('Unexpected error during Supabase update:', error);
+        console.log(error);
         return false;
     }
 }
@@ -198,11 +199,13 @@ async function handler(context) {
             break;
         case 'payment_intent.created':
             const paymentIntentCreated = event.data.object;
+            
             const updateFields = {
                 payment_id: paymentIntentCreated.id,
                 payment_status: 'Pending'
-};
-            await supaUpdate('bookings',`proid` ,`${paymentIntentCreated.metadata.proid}`,updateFields,)
+            };
+            console.log(updateFields);
+            await supaUpdate('bookings',`proid` ,`${paymentIntentCreated.metadata.proid}`,updateFields)
             // Then define and call a function to handle the event payment_intent.created
             break;
         case 'payment_intent.payment_failed':
