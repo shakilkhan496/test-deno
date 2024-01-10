@@ -154,7 +154,7 @@ async function handler(context) {
     const signature = context.request.headers.get('Stripe-Signature');
 
     const body = await context.request.body().value;
-    console.log(body);
+    console.log(typeof(body));
     let event;
     // try {
     //     event = await stripe.webhooks.constructEventAsync(
@@ -168,7 +168,7 @@ async function handler(context) {
     //     return new Response(err.message, { status: 400 });
     // }
 
-    console.log('✅ Success:', event.id);
+    
 
     if (event.type === 'payment_intent.succeeded') {
         const obj = event.data.object as Stripe.PaymentIntent;
