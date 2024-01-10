@@ -150,10 +150,10 @@ async function createAccountLink(accountId) {
 // This handler will be called for every incoming request.
 const signInSecret = 'whsec_1l6mRfBEEelYMwYB9UFq8mhehPqR1n1c';
 
-async function handler(request: Request) {
-    const signature = request.headers.get('Stripe-Signature');
+async function handler(context) {
+    const signature = context.request.headers.get('Stripe-Signature');
 
-    const body = await request.text();
+    const body = await context.text();
     let event;
     try {
         event = await stripe.webhooks.constructEventAsync(
