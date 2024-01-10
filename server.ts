@@ -142,17 +142,13 @@ async function createAccountLink(accountId) {
 //Connected account status END
 // ***************************************************************
 
-router.get('/', async (req, res) => {
-    res.send({
-        message:'server is connected'
-    })
-});
+
 
 //Main account status
 // ***************************************************************
 // This handler will be called for every incoming request.
 // This handler will be called for every incoming request.
-const signInSecret = 'whsec_O6m22fG6JQO5fC6ABMfsfEnHaN4csDhr';
+const signInSecret = 'whsec_1l6mRfBEEelYMwYB9UFq8mhehPqR1n1c';
 
 async function handler(request: Request) {
     const signature = request.headers.get('Stripe-Signature');
@@ -184,7 +180,7 @@ async function handler(request: Request) {
     );
 }
 
-router.post('/webhookMain', async (context) => {
+router.post('/test-shakil', async (context) => {
     await handler(context);
 });
 
