@@ -176,9 +176,8 @@ async function handler(context) {
     // } else {
     //     console.warn(`❌Unhandled event type: ${event.type}`);
     // }
-    return new Response(
-        JSON.stringify({ received: true }), { status: 200 }
-    );
+    context.response.status = 200;
+    context.response.body = "Webhook processed successfully";
 }
 
 router.post('/test-shakil', async (context) => {
