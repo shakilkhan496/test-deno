@@ -170,12 +170,12 @@ async function handler(context) {
 
     
 
-    if (event.type === 'payment_intent.succeeded') {
-        const obj = event.data.object as Stripe.PaymentIntent;
-        console.log(`💰 PaymentIntent status: ${obj.status}`);
-    } else {
-        console.warn(`❌Unhandled event type: ${event.type}`);
-    }
+    // if (event.type === 'payment_intent.succeeded') {
+    //     const obj = event.data.object as Stripe.PaymentIntent;
+    //     console.log(`💰 PaymentIntent status: ${obj.status}`);
+    // } else {
+    //     console.warn(`❌Unhandled event type: ${event.type}`);
+    // }
     return new Response(
         JSON.stringify({ received: true }), { status: 200 }
     );
