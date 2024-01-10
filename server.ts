@@ -150,6 +150,27 @@ async function createAccountLink(accountId) {
 // This handler will be called for every incoming request.
 const signInSecret = 'whsec_6jeso8V1B5Sl7TK5UX89bdmMDHwQf6b4';
 
+//supabase master function
+async function supaUpdate(tableName:string,primaryFieldName:string, primaryFieldValue:string, updateFields:{}) {
+    try {
+        const { error } = await supabase
+            .from(`${tableName}`)
+            .update(updateFields)
+            .eq(`${primaryFieldName}`, primaryFieldValue)
+            .select();
+
+        if (error) {
+            console.error('Error updating Supabase:', error);
+            return false;
+        }
+
+        return true;
+    } catch (error) {
+        console.error('Unexpected error during Supabase update:', error);
+        return false;
+    }
+}
+
 async function handler(context) {
     console.log('Trigger server')
     const signature = context.request.headers.get('Stripe-Signature');
@@ -169,14 +190,38 @@ async function handler(context) {
         return new Response(err.message, { status: 400 });
     }
 
-    
-
-    if (event.type === 'payment_intent.succeeded') {
-        const obj = event.data.object as Stripe.PaymentIntent;
-        console.log(`💰 PaymentIntent status: ${obj.status}`);
-    } else {
-        console.warn(`❌Unhandled event type: ${event.type}`);
+    // Handle the event
+    switch (event.type) {
+        case 'payment_intent.canceled':
+            const paymentIntentCanceled = event.data.object;
+            // Then define and call a function to handle the event payment_intent.canceled
+            break;
+        case 'payment_intent.created':
+            const paymentIntentCreated = event.data.object;
+            const updateFields = {
+                payment_id: paymentIntentCreated.id,
+                payment_status: 'Pending'
+};
+            await supaUpdate('bookings',`proid` ,`${paymentIntentCreated.metadata.proid}`,updateFields,)
+            // Then define and call a function to handle the event payment_intent.created
+            break;
+        case 'payment_intent.payment_failed':
+            const paymentIntentPaymentFailed = event.data.object;
+            // Then define and call a function to handle the event payment_intent.payment_failed
+            break;
+        case 'payment_intent.processing':
+            const paymentIntentProcessing = event.data.object;
+            // Then define and call a function to handle the event payment_intent.processing
+            break;
+        case 'payment_intent.succeeded':
+            const paymentIntentSucceeded = event.data.object;
+            // Then define and call a function to handle the event payment_intent.succeeded
+            break;
+        // ... handle other event types
+        default:
+            console.log(`Unhandled event type ${event.type}`);
     }
+
     context.response.status = 200;
     context.response.body = "Webhook processed successfully";
 }
