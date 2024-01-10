@@ -161,11 +161,8 @@ router.post('/webhookMain', async (context) => {
 
         let event;
         try {
-            // Parse the rawBody as JSON
-            const parsedBody = JSON.parse(rawBody);
-
             event = await stripe.webhooks.constructEventAsync(
-                parsedBody,
+                rawBody,
                 signature,
                 signInSecret,
                 undefined
@@ -195,6 +192,7 @@ router.post('/webhookMain', async (context) => {
         return new Response('Internal Server Error', { status: 500 });
     }
 });
+
 
 
 
