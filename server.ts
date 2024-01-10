@@ -195,16 +195,21 @@ async function handler(context) {
 
     // Handle the event
     switch (event.type) {
-        case 'payment_intent.canceled':
-            const paymentIntentCanceled = event.data.object;
+        case 'payment_intent.amount_capturable_updated':
+            const paymentIntentCaptured = event.data.object;
             // Then define and call a function to handle the event payment_intent.canceled
+            const capturedFields = {
+                payment_id: paymentIntentCaptured.id,
+                payment_status: 'Paid',
+            };
+            setTimeout(async () => await supaUpdate('bookings', `id`, `${paymentIntentCaptured.metadata.id}`, capturedFields), 5000);
             break;
         case 'payment_intent.created':
             const paymentIntentCreated = event.data.object;
             console.log(`${paymentIntentCreated.metadata.id}`);
             const updateFields = {
                 payment_id: paymentIntentCreated.id,
-                payment_status: 'Pending'
+                payment_status: 'Unpaid'
             };
             console.log(updateFields);
             
@@ -227,7 +232,7 @@ async function handler(context) {
                 payment_status: 'Completed',
             };
 
-            setTimeout(async () => await supaUpdate('bookings', `id`, `${paymentIntentCreated.metadata.id}`, updateFields), 5000);
+            setTimeout(async () => await supaUpdate('bookings', `id`, `${paymentIntentSucceeded.metadata.id}`, successFields), 5000);
 
             break;
         // ... handle other event types
