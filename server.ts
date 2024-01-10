@@ -154,6 +154,7 @@ router.get('/', async (req, res) => {
 const signInSecret = 'whsec_mNEmSD5aLWwqB3GsYjwj2lWtZG1eCvlj';
 
 async function handler(context) {
+    console.log('this is context',context);
     const signature = context.request.headers.get('Stripe-Signature');
     const newBody = await context.text();
     console.log('this is new body', newBody);
