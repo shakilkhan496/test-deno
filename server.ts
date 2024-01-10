@@ -155,7 +155,9 @@ router.get('/', async (req, res) => {
 
 
 // This handler will be called for every incoming request.
-const signInSecret ='whsec_mNEmSD5aLWwqB3GsYjwj2lWtZG1eCvlj';
+// This handler will be called for every incoming request.
+const signInSecret = 'whsec_mNEmSD5aLWwqB3GsYjwj2lWtZG1eCvlj';
+
 async function handler(request) {
     const signature = request.headers.get('Stripe-Signature');
 
@@ -192,9 +194,10 @@ async function handler(request) {
     return new Response(JSON.stringify({ received: true }), { status: 200 });
 }
 
-router.post('/webhookMain', (req, res) => {
-    handler(req);
-})
+router.post('/webhookMain', async (context) => {
+    await handler(context.request);
+});
+
 
 
 
