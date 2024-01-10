@@ -156,13 +156,13 @@ const signInSecret = 'whsec_mNEmSD5aLWwqB3GsYjwj2lWtZG1eCvlj';
 async function handler(request) {
     const signature = request.headers.get('Stripe-Signature');
 
-    // Use body({ type: "bytes" }).value to get the raw body as Uint8Array.
-    const rawBodyBytes = await request.body({ type: "bytes" }).value;
+    // Read the raw body directly using Deno's readAll function.
+    const rawBody = await Deno.readAll(request.body);
 
     let event;
     try {
         event = await stripe.webhooks.constructEventAsync(
-            rawBodyBytes,
+            rawBody,
             signature,
             signInSecret,
             undefined
@@ -192,6 +192,7 @@ async function handler(request) {
 router.post('/webhookMain', async (context) => {
     await handler(context.request);
 });
+
 
 
 
