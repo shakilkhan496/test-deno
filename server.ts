@@ -154,8 +154,11 @@ router.post('/webhookMain', async (context) => {
         const signature = context.request.headers?.get('Stripe-Signature') || '';
         const signInSecret = 'whsec_mNEmSD5aLWwqB3GsYjwj2lWtZG1eCvlj';
 
-        // Use context.request.bodyRaw to get the raw body as Buffer
-        const rawBody = await context.request.bodyRaw();
+        // Use context.request.body().value to get the raw body as a string
+        const rawBodyString = await context.request.body().value;
+
+        // Convert the string to a Buffer
+        const rawBody = new TextEncoder().encode(rawBodyString);
 
         console.log('Request body: ', rawBody.toString('utf-8'));
 
@@ -192,6 +195,7 @@ router.post('/webhookMain', async (context) => {
         return new Response('Internal Server Error', { status: 500 });
     }
 });
+
 
 
 
