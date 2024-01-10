@@ -148,7 +148,7 @@ async function createAccountLink(accountId) {
 // ***************************************************************
 // This handler will be called for every incoming request.
 // This handler will be called for every incoming request.
-const signInSecret = 'whsec_1l6mRfBEEelYMwYB9UFq8mhehPqR1n1c';
+const signInSecret = 'whsec_6jeso8V1B5Sl7TK5UX89bdmMDHwQf6b4';
 
 async function handler(context) {
     const signature = context.request.headers.get('Stripe-Signature');
