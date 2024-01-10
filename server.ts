@@ -153,6 +153,7 @@ const signInSecret = 'whsec_6jeso8V1B5Sl7TK5UX89bdmMDHwQf6b4';
 //supabase master function
 async function supaUpdate(tableName:string,primaryFieldName:string, primaryFieldValue:string, updateFields:{}) {
     try {
+        console.log('updating supabase called')
         const { error } = await supabase
             .from(`${tableName}`)
             .update(updateFields)
