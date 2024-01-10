@@ -158,8 +158,9 @@ async function handler(context) {
 
     // Use context.request.body().value to get the raw body as Uint8Array.
     const rawBody = await context.request.body().value;
+    const body = await context.request.text();
     console.log('this is rawBody',rawBody);
-    const body = JSON.stringify(rawBody);
+    // const body = JSON.stringify(rawBody);
     console.log('this is body',body);
     console.log('this is type of body',typeof(body));
     let event;
