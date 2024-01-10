@@ -222,6 +222,13 @@ async function handler(context) {
         case 'payment_intent.succeeded':
             const paymentIntentSucceeded = event.data.object;
             // Then define and call a function to handle the event payment_intent.succeeded
+            const successFields = {
+                payment_id: paymentIntentSucceeded.id,
+                payment_status: 'Completed',
+            };
+
+            setTimeout(async () => await supaUpdate('bookings', `id`, `${paymentIntentCreated.metadata.id}`, updateFields), 5000);
+
             break;
         // ... handle other event types
         default:
