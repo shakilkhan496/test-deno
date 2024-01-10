@@ -158,7 +158,7 @@ async function handler(context) {
 
     // Use context.request.body().value to get the raw body as Uint8Array.
     const rawBody = await context.request.body().value;
-
+    console.log('this is rawBody',rawBody);
     let event;
     try {
         event = await stripe.webhooks.constructEventAsync(
