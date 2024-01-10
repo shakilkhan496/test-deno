@@ -157,7 +157,7 @@ router.post('/webhookMain', async (context) => {
         // Use context.request.body().value to get the raw body
         const rawBody = await context.request.body().value;
 
-        console.log('Request body: ', context.request.body)
+        console.log('Request body: ', rawBody)
 
         let event;
         try {
