@@ -141,7 +141,11 @@ async function createAccountLink(accountId) {
 //Connected account status END
 // ***************************************************************
 
-
+router.get('/', async (req, res) => {
+    res.send({
+        message:'server is connected'
+    })
+});
 
 //Main account status
 // ***************************************************************
