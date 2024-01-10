@@ -150,18 +150,19 @@ router.get('/', async (req, res) => {
 //Main account status
 // ***************************************************************
 // This handler will be called for every incoming request.
+// This handler will be called for every incoming request.
 const signInSecret = 'whsec_mNEmSD5aLWwqB3GsYjwj2lWtZG1eCvlj';
 
 async function handler(request) {
     const signature = request.headers.get('Stripe-Signature');
 
-    // Use body({ type: "text" }).value to get the raw body as text.
-    const rawBodyText = await request.body({ type: "text" }).value;
+    // Use body({ type: "bytes" }).value to get the raw body as Uint8Array.
+    const rawBodyBytes = await request.body({ type: "bytes" }).value;
 
     let event;
     try {
         event = await stripe.webhooks.constructEventAsync(
-            rawBodyText,
+            rawBodyBytes,
             signature,
             signInSecret,
             undefined
@@ -191,6 +192,7 @@ async function handler(request) {
 router.post('/webhookMain', async (context) => {
     await handler(context.request);
 });
+
 
 
 
