@@ -162,7 +162,7 @@ async function handler(context) {
     let event;
     try {
         event = await stripe.webhooks.constructEventAsync(
-            rawBody,
+            JSON.stringify(rawBody),
             signature,
             signInSecret,
             undefined
