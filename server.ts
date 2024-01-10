@@ -201,14 +201,14 @@ async function handler(context) {
             break;
         case 'payment_intent.created':
             const paymentIntentCreated = event.data.object;
-            
+            console.log(`${paymentIntentCreated.metadata.id}`);
             const updateFields = {
                 payment_id: paymentIntentCreated.id,
                 payment_status: 'Pending'
             };
             console.log(updateFields);
             
-            setTimeout(async () => await await supaUpdate('bookings', `proid`, `${paymentIntentCreated.metadata.proid}`, updateFields), 5000);
+            setTimeout(async () => await supaUpdate('bookings', `id`, `${paymentIntentCreated.metadata.id}`, updateFields), 5000);
             // Then define and call a function to handle the event payment_intent.created
             break;
         case 'payment_intent.payment_failed':
