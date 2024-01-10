@@ -151,12 +151,26 @@ router.get('/', async (req, res) => {
 // ***************************************************************
 router.post('/webhookMain', async (context) => {
     try {
-        const rawBody = await context.request.body().value;
+        const signature = context.request.headers?.get('Stripe-Signature') || '';
+        const signInSecret = 'whsec_mNEmSD5aLWwqB3GsYjwj2lWtZG1eCvlj';
 
+        // Use context.request.body().value to get the raw body
+        const rawBody = await context.request.body().value;
+        console.log('signature',signature);
         console.log('Request body: ', rawBody);
 
-        let event=rawBody;
-       
+        let event;
+        try {
+            event = await stripe.webhooks.constructEventAsync(
+                rawBody,
+                signature,
+                signInSecret,
+                undefined
+            );
+        } catch (err) {
+            console.log(`❌ Error message: ${err.message}`);
+            return new Response(err.message, { status: 400 });
+        }
 
         // Successfully constructed event
         console.log('✅ Success:', event.id);
