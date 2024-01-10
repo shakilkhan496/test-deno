@@ -161,6 +161,7 @@ router.post('/webhookMain', async (context) => {
 
         let event;
         try {
+            // Ensure raw body is passed without additional parsing
             event = await stripe.webhooks.constructEventAsync(
                 rawBodyString,
                 signature,
@@ -192,6 +193,7 @@ router.post('/webhookMain', async (context) => {
         return new Response('Internal Server Error', { status: 500 });
     }
 });
+
 
 
 
