@@ -207,7 +207,8 @@ async function handler(context) {
                 payment_status: 'Pending'
             };
             console.log(updateFields);
-            await supaUpdate('bookings',`proid` ,`${paymentIntentCreated.metadata.proid}`,updateFields)
+            
+            setTimeout(async () => await await supaUpdate('bookings', `proid`, `${paymentIntentCreated.metadata.proid}`, updateFields), 5000);
             // Then define and call a function to handle the event payment_intent.created
             break;
         case 'payment_intent.payment_failed':
