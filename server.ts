@@ -151,6 +151,7 @@ async function createAccountLink(accountId) {
 const signInSecret = 'whsec_6jeso8V1B5Sl7TK5UX89bdmMDHwQf6b4';
 
 async function handler(context) {
+    console.log('Trigger server')
     const signature = context.request.headers.get('Stripe-Signature');
 
     const body = await context.request.body({ type:'text'}).value;
@@ -170,12 +171,12 @@ async function handler(context) {
 
     
 
-    // if (event.type === 'payment_intent.succeeded') {
-    //     const obj = event.data.object as Stripe.PaymentIntent;
-    //     console.log(`💰 PaymentIntent status: ${obj.status}`);
-    // } else {
-    //     console.warn(`❌Unhandled event type: ${event.type}`);
-    // }
+    if (event.type === 'payment_intent.succeeded') {
+        const obj = event.data.object as Stripe.PaymentIntent;
+        console.log(`💰 PaymentIntent status: ${obj.status}`);
+    } else {
+        console.warn(`❌Unhandled event type: ${event.type}`);
+    }
     context.response.status = 200;
     context.response.body = "Webhook processed successfully";
 }
