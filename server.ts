@@ -225,6 +225,8 @@ async function handler(context) {
             const refundFiels={
                 amount_refunded: (parseFloat(chargeRefunded.amount_refunded)/100).toFixed(2),
                 amout_captured: (parseFloat(chargeRefunded.amount_captured) / 100).toFixed(2),
+                amount_transfered: (parseFloat(chargeRefunded.transfer_data.amount) / 100).toFixed(2),
+
             }
             // Then define and call a function to handle the event payment_intent.processing
             setTimeout(async () => await supaUpdate('bookings', `id`, `${chargeRefunded.metadata.id}`, refundFiels), 5000);
