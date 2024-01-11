@@ -220,9 +220,15 @@ async function handler(context) {
             const paymentIntentPaymentFailed = event.data.object;
             // Then define and call a function to handle the event payment_intent.payment_failed
             break;
-        case 'payment_intent.processing':
-            const paymentIntentProcessing = event.data.object;
+        case 'charge.refunded':
+            const chargeRefunded = event.data.object;
+            const refundFiels={
+                amount_refunded: (parseFloat(chargeRefunded.amount_refunded)/100).toFixed(2),
+                amout_captured: (parseFloat(chargeRefunded.amount_captured) / 100).toFixed(2),
+            }
             // Then define and call a function to handle the event payment_intent.processing
+            setTimeout(async () => await supaUpdate('bookings', `id`, `${chargeRefunded.metadata.id}`, refundFiels), 5000);
+
             break;
         case 'payment_intent.succeeded':
             const paymentIntentSucceeded = event.data.object;
