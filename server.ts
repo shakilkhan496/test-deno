@@ -227,9 +227,12 @@ async function handler(context) {
         case 'payment_intent.succeeded':
             const paymentIntentSucceeded = event.data.object;
             // Then define and call a function to handle the event payment_intent.succeeded
+            const amountInCents = parseFloat(paymentIntentSucceeded.transfer_data.amount);
+            const amountInDollars = (amountInCents / 100).toFixed(2);
             const successFields = {
                 payment_id: paymentIntentSucceeded.id,
                 payment_status: 'Succeeded',
+                amount_transfered: amountInDollars,
             };
 
             setTimeout(async () => await supaUpdate('bookings', `id`, `${paymentIntentSucceeded.metadata.id}`, successFields), 5000);
