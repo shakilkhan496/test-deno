@@ -200,7 +200,7 @@ async function handler(context) {
             // Then define and call a function to handle the event payment_intent.canceled
             const capturedFields = {
                 payment_id: paymentIntentCaptured.id,
-                payment_status: 'Paid',
+                payment_status: 'Captured',
             };
             setTimeout(async () => await supaUpdate('bookings', `id`, `${paymentIntentCaptured.metadata.id}`, capturedFields), 5000);
             break;
@@ -209,7 +209,7 @@ async function handler(context) {
             console.log(`${paymentIntentCreated.metadata.id}`);
             const updateFields = {
                 payment_id: paymentIntentCreated.id,
-                payment_status: 'Unpaid'
+                payment_status: 'Incomplete'
             };
             console.log(updateFields);
             
@@ -229,7 +229,7 @@ async function handler(context) {
             // Then define and call a function to handle the event payment_intent.succeeded
             const successFields = {
                 payment_id: paymentIntentSucceeded.id,
-                payment_status: 'Completed',
+                payment_status: 'Succeeded',
             };
 
             setTimeout(async () => await supaUpdate('bookings', `id`, `${paymentIntentSucceeded.metadata.id}`, successFields), 5000);
