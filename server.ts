@@ -200,7 +200,7 @@ async function handler(context) {
             // Then define and call a function to handle the event payment_intent.canceled
             const capturedFields = {
                 payment_id: paymentIntentCaptured.id,
-                payment_status: 'Captured',
+                payment_status: 'Uncaptured',
             };
             setTimeout(async () => await supaUpdate('bookings', `id`, `${paymentIntentCaptured.metadata.id}`, capturedFields), 5000);
             break;
@@ -241,6 +241,7 @@ async function handler(context) {
                 payment_id: paymentIntentSucceeded.id,
                 payment_status: 'Succeeded',
                 amount_transfered: amountInDollars,
+                amout_captured: (parseFloat(paymentIntentSucceeded.amount_received) / 100).toFixed(2),
             };
 
             setTimeout(async () => await supaUpdate('bookings', `id`, `${paymentIntentSucceeded.metadata.id}`, successFields), 5000);
